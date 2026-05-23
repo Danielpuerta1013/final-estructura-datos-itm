@@ -21,22 +21,21 @@ public abstract class Personaje {
         totalPersonajes++;
     }
 
-    //toda sublaclse debera heredar estos metodos
+    // Metodos abstractos - toda sublaclse debera heredar estos metodos
     public abstract int atacar(Personaje objetivo);
     public abstract String habilidadEspecial();
 
-    //validamos el daño hacemos que el minimo sea 1
-    //sobrecarga
+    // Sobrecarga - validamos el daño hacemos que el minimo sea 1
     public void recibirDanio(int danio) {
         int danioReal = Math.max(1, danio - defensa / 2);
         setHp(hp - danioReal);
     }
+
     public void recibirDanio(int danio, TipoElemento tipoAtaque) {
         double efectividad = tipoAtaque.efectividadContra(this.tipo);
         int danioConEfectividad = (int)(danio * efectividad);
         recibirDanio(danioConEfectividad);
     }
-
 
     public static String calcularEfectividad(TipoElemento atacante, TipoElemento defensor) {
         double e = atacante.efectividadContra(defensor);
@@ -45,32 +44,82 @@ public abstract class Personaje {
         return "";
     }
 
-    public static int getTotalPersonajes() { return totalPersonajes; }
-    public static void resetContador() { totalPersonajes = 0; }
+    public static int getTotalPersonajes() {
+        return totalPersonajes;
+    }
 
-    // getters y setters
-    public String getNombre() { return nombre; }
-    public void setNombre(String nombre) { this.nombre = nombre; }
+    public static void resetContador() {
+        totalPersonajes = 0;
+    }
 
-    public int getHp() { return hp; }
-    public void setHp(int hp) { this.hp = Math.max(0, Math.min(hp, hpMax)); }
+    // Getters y setters
+    public String getNombre() {
+        return nombre;
+    }
 
-    public int getHpMax() { return hpMax; }
-    public void setHpMax(int hpMax) { this.hpMax = hpMax; }
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
 
-    public int getAtaque() { return ataque; }
-    public void setAtaque(int ataque) { this.ataque = ataque; }
 
-    public int getDefensa() { return defensa; }
-    public void setDefensa(int defensa) { this.defensa = defensa; }
+    public int getHp() {
+        return hp;
+    }
 
-    public int getNivel() { return nivel; }
-    public void setNivel(int nivel) { this.nivel = nivel; }
+    public void setHp(int hp) {
+        this.hp = Math.max(0, Math.min(hp, hpMax));
+    }
 
-    public TipoElemento getTipo() { return tipo; }
-    public void setTipo(TipoElemento tipo) { this.tipo = tipo; }
 
-    public boolean estaVivo() { return hp > 0; }
+    public int getHpMax() {
+        return hpMax;
+    }
+
+    public void setHpMax(int hpMax) {
+        this.hpMax = hpMax;
+    }
+
+
+    public int getAtaque() {
+        return ataque;
+    }
+
+    public void setAtaque(int ataque) {
+        this.ataque = ataque;
+    }
+
+
+    public int getDefensa() {
+        return defensa;
+    }
+
+    public void setDefensa(int defensa) {
+        this.defensa = defensa;
+    }
+
+
+    public int getNivel() {
+        return nivel;
+    }
+
+    public void setNivel(int nivel) {
+        this.nivel = nivel;
+    }
+
+
+    public TipoElemento getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(TipoElemento tipo) {
+        this.tipo = tipo;
+    }
+
+
+    public boolean estaVivo() {
+        return hp > 0;
+    }
+
 
     public String getBarraHp() {
         int llenos = (int)((double) hp / hpMax * 10);
