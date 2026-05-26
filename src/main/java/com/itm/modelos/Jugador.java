@@ -2,6 +2,8 @@ package com.itm.modelos;
 
 import com.itm.interfaces.Atacable;
 import com.itm.interfaces.Curable;
+import com.itm.juego.HistorialAcciones;
+import com.itm.juego.Inventario;
 
 import java.util.Random;
 
@@ -9,17 +11,22 @@ public class Jugador extends Personaje implements Atacable, Curable {
     private int dinero;
     private int experiencia;
     private int insignias;
-    private static final String VERSION = "Pokemon v1.0";
+    private Inventario inventario;          // composicion HAS-A
+    private HistorialAcciones historial;    // composicion HAS-A
+    private static final String VERSION = "Pokemon-ED v1.0";
     private static final Random rng = new Random();
 
     public Jugador(String nombre, TipoElemento tipoStarter) {
         super(nombre, calcularHpInicial(tipoStarter), calcularAtaqueInicial(tipoStarter),
-              calcularDefensaInicial(tipoStarter), 5, tipoStarter);
+                calcularDefensaInicial(tipoStarter), 5, tipoStarter);
         this.dinero = 3000;
         this.experiencia = 0;
         this.insignias = 0;
+        this.inventario = new Inventario(20);
+        this.historial = new HistorialAcciones();
     }
 
+    // metodos static utilitarios para calcular stats segun tipo
     public static int calcularHpInicial(TipoElemento tipo) {
         switch (tipo) {
             case FUEGO: return 45;
@@ -67,7 +74,7 @@ public class Jugador extends Personaje implements Atacable, Curable {
         return nombreHabilidad + " (" + danioEspecial + " de danio)";
     }
 
-    // Sobrecarga — curar con cantidad especifica
+    // SOBRECARGA — curar con cantidad especifica
     @Override
     public void curar(int cantidad) {
         int hpAntes = getHp();
@@ -76,7 +83,7 @@ public class Jugador extends Personaje implements Atacable, Curable {
         System.out.println("  " + getNombre() + " recupero " + curado + " HP! (" + getHp() + "/" + getHpMax() + ")");
     }
 
-    // Sobrecarga — curar completamente
+    // SOBRECARGA — curar completamente
     public void curar() {
         int hpAntes = getHp();
         setHp(getHpMax());
@@ -102,29 +109,15 @@ public class Jugador extends Personaje implements Atacable, Curable {
         }
     }
 
-    public static String getVersion() {
-        return VERSION;
-    }
+    public static String getVersion() { return VERSION; }
 
-    public int getDinero() {
-        return dinero;
-    }
-
-    public void setDinero(int dinero) {
-        this.dinero = dinero;
-    }
-
-    public int getExperiencia() {
-        return experiencia;
-    }
-
-    public int getInsignias() {
-        return insignias;
-    }
-
-    public void setInsignias(int insignias) {
-        this.insignias = insignias;
-    }
+    public int getDinero() { return dinero; }
+    public void setDinero(int dinero) { this.dinero = dinero; }
+    public int getExperiencia() { return experiencia; }
+    public int getInsignias() { return insignias; }
+    public void setInsignias(int insignias) { this.insignias = insignias; }
+    public Inventario getInventario() { return inventario; }
+    public HistorialAcciones getHistorial() { return historial; }
 
     @Override
     public String toString() {
