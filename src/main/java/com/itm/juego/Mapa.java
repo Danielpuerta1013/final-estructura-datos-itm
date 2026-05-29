@@ -1,6 +1,8 @@
 package com.itm.juego;
 
-import com.itm.estructuras.Arbol;
+
+import com.itm.estrcturas.Arbol;
+
 import java.util.LinkedList;
 
 // COMPOSICION: Mapa TIENE UN Arbol<Zona> (BST ordenado por ID)

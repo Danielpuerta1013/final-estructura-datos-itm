@@ -1,10 +1,11 @@
 package com.itm.juego;
 
 import com.itm.excepciones.PokemonDebilitadoException;
-import com.itm.model.Enemigo;
-import com.itm.model.EntrenadorRival;
-import com.itm.model.Jugador;
-import com.itm.model.Personaje;
+import com.itm.modelos.Enemigo;
+import com.itm.modelos.EntrenadorRival;
+import com.itm.modelos.Jugador;
+import com.itm.modelos.Personaje;
+
 
 import java.util.Scanner;
 import java.util.Random;

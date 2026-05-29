@@ -1,9 +1,11 @@
 package com.itm.juego;
 
-import com.itm.model.Enemigo;
-import com.itm.model.EntrenadorRival;
-import com.itm.model.PokemonSalvaje;
-import com.itm.model.TipoElemento;
+
+
+import com.itm.modelos.Enemigo;
+import com.itm.modelos.EntrenadorRival;
+import com.itm.modelos.PokemonSalvaje;
+import com.itm.modelos.TipoElemento;
 
 import java.util.Random;
 

@@ -1,6 +1,7 @@
 package com.itm.juego;
 
-import com.itm.model.Jugador;
+
+import com.itm.modelos.Jugador;
 
 public class Pokeball extends Item {
     private int bonusDinero;

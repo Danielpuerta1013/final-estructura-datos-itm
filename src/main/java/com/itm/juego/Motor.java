@@ -1,11 +1,9 @@
 package com.itm.juego;
 
-import com.itm.model.Jugador;
+
+import com.itm.modelos.*;
+
 import java.util.LinkedList;
-import com.itm.model.Enemigo;
-import com.itm.model.EntrenadorRival;
-import com.itm.model.TipoElemento;
-import com.itm.model.Personaje;
 import java.util.Scanner;
 
 public class Motor {

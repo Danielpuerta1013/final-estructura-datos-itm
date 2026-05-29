@@ -1,6 +1,8 @@
 package com.itm.juego;
 
-import com.itm.model.Personaje;
+
+import com.itm.modelos.Personaje;
+
 import java.util.LinkedList;
 import java.util.Queue;
 
