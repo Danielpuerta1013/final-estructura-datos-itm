@@ -1,10 +1,12 @@
 package com.itm.juego;
 
+import com.itm.SoundManager;
 import com.itm.excepciones.PokemonDebilitadoException;
 import com.itm.modelos.Enemigo;
 import com.itm.modelos.EntrenadorRival;
 import com.itm.modelos.Jugador;
 import com.itm.modelos.Personaje;
+import com.itm.modelos.PokemonSalvaje;
 
 
 import java.util.Scanner;
@@ -13,6 +15,7 @@ import java.util.Random;
 public class Batalla {
     private GestorTurnos gestorTurnos;
     private static final Random rng = new Random();
+    private boolean capturo = false;
 
     public Batalla() {
         this.gestorTurnos = new GestorTurnos();
@@ -20,6 +23,7 @@ public class Batalla {
 
     // Retorna true si el jugador gano, false si perdio o huyo
     public boolean iniciar(Jugador jugador, Enemigo enemigo, Scanner scanner) {
+        SoundManager.reproducirLoop("batalla.wav");
         System.out.println("\n" + "=".repeat(55));
         System.out.println("  " + enemigo.getDescripcion());
         if (enemigo instanceof EntrenadorRival) {
@@ -27,6 +31,7 @@ public class Batalla {
         }
         System.out.println("=".repeat(55));
 
+        capturo = false;
         gestorTurnos.iniciarTurnos(jugador, enemigo);
 
         int turnoNum = 1;
@@ -57,7 +62,8 @@ public class Batalla {
         }
 
         gestorTurnos.limpiar();
-        return !huyo && jugador.estaVivo();
+        SoundManager.detenerLoop();
+        return capturo || (!huyo && jugador.estaVivo());
     }
 
     private boolean turnoJugador(Jugador jugador, Enemigo enemigo, Scanner scanner)
@@ -74,6 +80,7 @@ public class Batalla {
 
         switch (opcion) {
             case 1:
+                SoundManager.reproducir("ataque.wav");
                 int danio = jugador.atacar(enemigo);
                 String efectividad = Personaje.calcularEfectividad(jugador.getTipo(), enemigo.getTipo());
                 System.out.println("  " + jugador.getNombre() + " ataca por " + danio + " de danio! " + efectividad);
@@ -82,6 +89,7 @@ public class Batalla {
                 break;
 
             case 2:
+                SoundManager.reproducir("ataque.wav");
                 String habilidad = jugador.habilidadEspecial();
                 System.out.println("  " + jugador.getNombre() + " usa: " + habilidad);
                 // extraer el numero del string de habilidad y aplicar danio
@@ -95,13 +103,20 @@ public class Batalla {
                     System.out.println("  No tienes items!");
                 } else {
                     System.out.println("  === INVENTARIO ===");
-                    jugador.getInventario().mostrar();
-                    System.out.print("  Elige item (numero) o -1 para cancelar: ");
+                    for (int i = 0; i < jugador.getInventario().getCantidad(); i++) {
+                        System.out.println("  [" + (i + 1) + "] " + jugador.getInventario().obtener(i));
+                    }
+                    System.out.print("  Elige item (1-" + jugador.getInventario().getCantidad() + ") o 0 para cancelar: ");
                     int idx = leerOpcionLibre(scanner);
-                    if (idx >= 0 && idx < jugador.getInventario().getCantidad()) {
-                        Item item = jugador.getInventario().usarItem(idx);
+                    if (idx >= 1 && idx <= jugador.getInventario().getCantidad()) {
+                        Item item = jugador.getInventario().usarItem(idx - 1);
                         item.usar(jugador);
                         jugador.getHistorial().registrar("[Item] " + jugador.getNombre() + " uso " + item.getNombre());
+                        if (item instanceof Pokeball && enemigo instanceof PokemonSalvaje) {
+                            System.out.println("  Pokeball lanzada! " + enemigo.getNombre() + " fue capturado!");
+                            capturo = true;
+                            return true;
+                        }
                     } else {
                         System.out.println("  Opcion cancelada.");
                     }
@@ -163,6 +178,8 @@ public class Batalla {
             return -1;
         }
     }
+
+    public boolean isCapturo() { return capturo; }
 
     @Override
     public String toString() {
