@@ -1,6 +1,7 @@
 package com.itm.juego;
 
 
+import com.itm.SoundManager;
 import com.itm.modelos.Jugador;
 
 public class Pokeball extends Item {
@@ -17,6 +18,7 @@ public class Pokeball extends Item {
 
     @Override
     public void usar(Jugador jugador) {
+        SoundManager.reproducir("captura.wav");
         jugador.setDinero(jugador.getDinero() + bonusDinero);
         System.out.println("  Usaste " + getNombre() + "! Ganaste $" + bonusDinero + " extra.");
     }

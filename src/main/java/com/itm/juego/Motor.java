@@ -1,6 +1,7 @@
 package com.itm.juego;
 
 
+import com.itm.SoundManager;
 import com.itm.modelos.*;
 
 import java.util.LinkedList;
@@ -21,6 +22,7 @@ public class Motor {
     }
 
     public void iniciar() {
+        SoundManager.precargar("batalla.wav", "ataque.wav", "victoria.wav", "captura.wav");
         mostrarTitulo();
         configurarJugador();
         juegoActivo = true;
@@ -122,6 +124,14 @@ public class Motor {
         boolean victorioso = batalla.iniciar(jugador, enemigo, scanner);
 
         if (victorioso) {
+            if (batalla.isCapturo()) {
+                new Thread(() -> {
+                    try { Thread.sleep(2000); } catch (InterruptedException ignored) {}
+                    SoundManager.reproducir("victoria.wav");
+                }).start();
+            } else {
+                SoundManager.reproducir("victoria.wav");
+            }
             int exp = enemigo.getRecompensaExp();
             int dinero = enemigo.getRecompensaDinero();
             System.out.println("\n  Victoria! Ganaste " + exp + " EXP y $" + dinero + "!");
@@ -265,6 +275,7 @@ public class Motor {
     }
 
     private void mostrarVictoria() {
+        SoundManager.reproducir("victoria.wav");
         System.out.println("\n" + "=".repeat(55));
         System.out.println("         *** FELICITACIONES " + jugador.getNombre().toUpperCase() + " ***");
         System.out.println("         ERES EL NUEVO CAMPEON POKEMON!");
